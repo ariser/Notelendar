@@ -37,6 +37,10 @@ body {
     cursor: text;
 }
 
+.b-day-entity.current {
+    outline: 2px solid #71c3c6;
+}
+
 .b-day-entity.empty {
     background: #f9f9f9;
     box-shadow: none;

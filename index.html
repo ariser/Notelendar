@@ -9,7 +9,7 @@
 <body ng-controller="notelendarCtrl">
     <div class="b-ctrls">
         <button type="button" ng-click="prevMonth()" class="b-ctrls__btn"><i class="fa fa-arrow-circle-o-left"></i></button>
-        <span class="b-ctrls__val">{{currentMonth | monthName}} {{currentYear}}</span>
+        <span class="b-ctrls__val">{{displayedMonth | monthName}} {{displayedYear}}</span>
         <button type="button" ng-click="nextMonth()" class="b-ctrls__btn"><i class="fa fa-arrow-circle-o-right"></i></button>
     </div>
 
@@ -25,7 +25,7 @@
         </tr>
         <tr ng-repeat="week in monthWeeks">
             <td ng-repeat="day in week" class="b-notelendar__day">
-                <div class="b-day-entity" ng-click="editNote(day)" ng-class="{empty: !day.date, editing: editingDay == day}">
+                <div class="b-day-entity" ng-click="editNote(day)" ng-class="{empty: !day.date, editing: editingDay == day, current: isCurrent(day)}">
                     <div class="b-day-entity__date">{{day.date}}</div>
                     <div class="b-day-entity__note" nr-overflow-title>{{day.note}}</div>
                     <form ng-show="editingDay == day">

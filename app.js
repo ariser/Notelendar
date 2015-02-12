@@ -3,8 +3,8 @@
 .controller('notelendarCtrl', ['$scope', 'storage', function ($scope, storage) {
 
     $scope.editingDay = null;
-    $scope.currentYear = new Date().getFullYear();
-    $scope.currentMonth = new Date().getMonth();
+    $scope.displayedYear = new Date().getFullYear();
+    $scope.displayedMonth = new Date().getMonth();
 
     $scope.monthWeeks = [];
 
@@ -14,14 +14,14 @@
             notes = storage.retrieve(year, month),
 
             theFirstDayOfWeek = new Date(year, month, 1).getDay(),
-            currentDay = 1 - theFirstDayOfWeek,
+            day = 1 - theFirstDayOfWeek,
             daysInMonth = new Date(year, month + 1, 0).getDate();
 
-        while (currentDay <= daysInMonth) {
+        while (day <= daysInMonth) {
             var week = [];
             for (var i = 0; i < 7; i++) {
-                week.push(currentDay > 0 && currentDay <= daysInMonth ? { date: currentDay, note: notes[currentDay] || '' } : {});
-                currentDay++;
+                week.push(day > 0 && day <= daysInMonth ? { year: year, month: month, date: day, note: notes[day] || '' } : {});
+                day++;
             }
             weeks.push(week);
             week = [];
@@ -30,10 +30,15 @@
         $scope.monthWeeks = weeks;
     }
 
-    $scope.$watchGroup(['currentYear', 'currentMonth'], function (newValues) {
+    $scope.$watchGroup(['displayedYear', 'displayedMonth'], function (newValues) {
         calculateWeeks(newValues[0], newValues[1]);
     });
-    calculateWeeks($scope.currentYear, $scope.currentMonth);
+    calculateWeeks($scope.displayedYear, $scope.displayedMonth);
+
+    $scope.isCurrent = function (day) {
+        var now = new Date;
+        return day.year === now.getFullYear() && day.month === now.getMonth() && day.date === now.getDate();
+    };
 
     $scope.editNote = function (day) {
         if (!day.date) return;
@@ -41,25 +46,25 @@
     };
 
     $scope.saveNote = function (day) {
-        storage.save($scope.currentYear, $scope.currentMonth, day.date, day.note);
+        storage.save($scope.displayedYear, $scope.displayedMonth, day.date, day.note);
         $scope.editingDay = null;
     };
 
     $scope.nextMonth = function () {
-        $scope.currentMonth++;
-        if ($scope.currentMonth > 11) {
-            $scope.currentMonth = 0;
+        $scope.displayedMonth++;
+        if ($scope.displayedMonth > 11) {
+            $scope.displayedMonth = 0;
             $scope.nextYear();
         }
     };
     $scope.prevMonth = function () {
-        $scope.currentMonth--;
-        if ($scope.currentMonth < 0) {
-            $scope.currentMonth = 11;
+        $scope.displayedMonth--;
+        if ($scope.displayedMonth < 0) {
+            $scope.displayedMonth = 11;
             $scope.prevYear();
         }
     };
 
-    $scope.nextYear = function () { $scope.currentYear++; };
-    $scope.prevYear = function () { $scope.currentYear--; };
+    $scope.nextYear = function () { $scope.displayedYear++; };
+    $scope.prevYear = function () { $scope.displayedYear--; };
 }]);
