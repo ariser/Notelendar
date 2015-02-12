@@ -22,26 +22,6 @@ body {
 .b-notelendar__day {
     border: 1px solid #eee;
     vertical-align: top;
-    -moz-transition: .5s;
-    -o-transition: .5s;
-    -webkit-transition: .5s;
-    transition: .5s;
-}
-
-.b-notelendar__day.animate-enter {
-    opacity: 0;
-}
-
-.b-notelendar__day.animate-enter-active {
-    opacity: 1;
-}
-
-.b-notelendar__day.animate-leave {
-    opacity: 1;
-}
-
-.b-notelendar__day.animate-leave-active {
-    opacity: 0;
 }
 
 
