@@ -1,0 +1,46 @@
+﻿<!doctype html>
+<html ng-app="notelendar">
+<head>
+    <meta charset="utf-8">
+    <title>Notelendar</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="app.css">
+</head>
+<body ng-controller="notelendarCtrl">
+    <div class="b-ctrls">
+        <button type="button" ng-click="prevMonth()" class="b-ctrls__btn"><i class="fa fa-arrow-circle-o-left"></i></button>
+        <span class="b-ctrls__val">{{currentMonth | monthName}} {{currentYear}}</span>
+        <button type="button" ng-click="nextMonth()" class="b-ctrls__btn"><i class="fa fa-arrow-circle-o-right"></i></button>
+    </div>
+
+    <table class="b-notelendar">
+        <tr>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wen</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+        </tr>
+        <tr ng-repeat="week in monthWeeks">
+            <td ng-repeat="day in week" class="b-notelendar__day">
+                <div class="b-day-entity" ng-click="editNote(day)" ng-class="{empty: !day.date, editing: editingDay == day}">
+                    <div class="b-day-entity__date">{{day.date}}</div>
+                    <div class="b-day-entity__note" nr-overflow-title>{{day.note}}</div>
+                    <form ng-show="editingDay == day">
+                        <textarea class="b-day-entity__editor" ng-model="day.note" ng-blur="saveNote(day)" nr-focus="editingDay == day" nr-ctrl-enter="saveNote(day)"></textarea>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js"></script>
+    <script src="app.js"></script>
+    <script src="storage.js"></script>
+    <script src="directives.js"></script>
+    <script src="filters.js"></script>
+
+</body>
+</html>
